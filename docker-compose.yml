@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: mm_api
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    volumes:
+      - /app/node_modules
+      - ./src:/app/src
+    restart: unless-stopped
