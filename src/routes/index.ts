@@ -31,6 +31,14 @@ const init = async (server: FastifyInstance) => {
           properties: {
             a39x5cybshwrbjpc3juaakcyj6e: `{"from": ${Date.now()}}`,
             ae9ar615xoknd8hw8py7mbyr7zo: 'a1wj1kupmcnx3qbyqsdkyhkbzgr',
+            ao44fz8nf6z6tuj1x31t9yyehcc: [
+              'ppmdhd5y138zbpqb3ocwy3r7rc',
+              'cqmg9gu3ptyadk31s8wrdxhtsa',
+              'rw4cxgm1qpgmzd5ts78dgts38e',
+              '3wid7xjx73y63ct3wh3k61ot6w',
+              '11ei69wt47fz9kg4rypwx4drse',
+              '1jtucy8b7pfu7btahd3k141bgc',
+            ],
           },
         },
       };
@@ -39,6 +47,7 @@ const init = async (server: FastifyInstance) => {
         reqData,
         headers
       );
+
       reply.send({ ok: true });
     } catch (err) {
       console.error(err);
