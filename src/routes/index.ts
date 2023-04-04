@@ -1,6 +1,12 @@
 import { FastifyInstance } from 'fastify';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { getHeaders } from '../config/http';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const init = async (server: FastifyInstance) => {
   server.get('/ping', async (request, reply) => {
@@ -20,6 +26,7 @@ const init = async (server: FastifyInstance) => {
       const block = cartTemplate.data[0];
       const blockId = block.id;
 
+      const newDate = dayjs().tz('Asia/Seoul', true).unix();
       const reqData = {
         title: new Date().toLocaleDateString('en-GB', {
           weekday: 'long',
@@ -29,7 +36,7 @@ const init = async (server: FastifyInstance) => {
         }),
         updatedFields: {
           properties: {
-            a39x5cybshwrbjpc3juaakcyj6e: `{"from": ${Date.now()}}`,
+            a39x5cybshwrbjpc3juaakcyj6e: `{"from": ${newDate}}`,
             ae9ar615xoknd8hw8py7mbyr7zo: 'a1wj1kupmcnx3qbyqsdkyhkbzgr',
             ao44fz8nf6z6tuj1x31t9yyehcc: [
               'ppmdhd5y138zbpqb3ocwy3r7rc',
