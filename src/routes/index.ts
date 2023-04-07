@@ -10,7 +10,7 @@ dayjs.extend(timezone);
 
 const init = async (server: FastifyInstance) => {
   server.get('/ping', async (request, reply) => {
-    return 'pong\n';
+    reply.send({ message: dayjs().tz('Asia/Seoul', true).valueOf() });
   });
 
   server.get('/daily', async (_, reply) => {
@@ -26,7 +26,7 @@ const init = async (server: FastifyInstance) => {
       const block = cartTemplate.data[0];
       const blockId = block.id;
 
-      const newDate = dayjs().tz('Asia/Seoul', true).unix();
+      const newDate = dayjs().tz('Asia/Seoul', true).valueOf();
       const reqData = {
         title: new Date().toLocaleDateString('en-GB', {
           weekday: 'long',
