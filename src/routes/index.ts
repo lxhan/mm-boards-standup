@@ -37,7 +37,7 @@ const init = async (server: FastifyInstance) => {
 
       const newDate = utcToZonedTime(new Date(), 'Asia/Seoul');
       const reqData = {
-        title: new Date().toLocaleDateString('en-GB', {
+        title: newDate.toLocaleDateString('en-GB', {
           weekday: 'long',
           month: 'numeric',
           year: 'numeric',
