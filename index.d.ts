@@ -8,6 +8,8 @@ declare module 'fastify' {
       BASE_URL: string;
       BOARD_ID: string;
       TEMPLATE_BLOCK_ID: string;
+      WEBHOOK: string;
+      ZOOM: string;
     };
   }
 }

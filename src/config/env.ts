@@ -18,6 +18,12 @@ const schema = {
     TEMPLATE_BLOCK_ID: {
       type: 'string',
     },
+    WEBHOOK: {
+      type: 'string',
+    },
+    ZOOM: {
+      type: 'string',
+    },
   },
 };
 

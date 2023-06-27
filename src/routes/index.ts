@@ -1,16 +1,25 @@
 import { FastifyInstance } from 'fastify';
+import { getUnixTime } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import axios from 'axios';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import { getHeaders } from '../config/http';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
 const init = async (server: FastifyInstance) => {
-  server.get('/ping', async (request, reply) => {
-    reply.send({ message: dayjs().tz('Asia/Seoul', true).valueOf() });
+  server.get('/ping', async (_, reply) => {
+    reply.send({ message: utcToZonedTime(new Date(), 'Asia/Seoul') });
+  });
+
+  server.get('/reminder', async (_, reply) => {
+    const { WEBHOOK, ZOOM } = server.config;
+    await axios.post(
+      WEBHOOK,
+      {
+        text: `@channel \nDon't forget to fill out the daily report before the 1 PM KST meeting.\nSee you on Zoom!\n${ZOOM}`,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    reply.send({ ok: true });
   });
 
   server.get('/daily', async (_, reply) => {
@@ -26,7 +35,7 @@ const init = async (server: FastifyInstance) => {
       const block = cartTemplate.data[0];
       const blockId = block.id;
 
-      const newDate = dayjs().tz('Asia/Seoul', true).valueOf();
+      const newDate = utcToZonedTime(new Date(), 'Asia/Seoul');
       const reqData = {
         title: new Date().toLocaleDateString('en-GB', {
           weekday: 'long',
@@ -36,7 +45,9 @@ const init = async (server: FastifyInstance) => {
         }),
         updatedFields: {
           properties: {
-            a39x5cybshwrbjpc3juaakcyj6e: `{"from": ${newDate}}`,
+            a39x5cybshwrbjpc3juaakcyj6e: `{"from": ${
+              getUnixTime(newDate) * 1000
+            }}`,
             ae9ar615xoknd8hw8py7mbyr7zo: 'a1wj1kupmcnx3qbyqsdkyhkbzgr',
             ao44fz8nf6z6tuj1x31t9yyehcc: [
               'ppmdhd5y138zbpqb3ocwy3r7rc',
@@ -45,7 +56,8 @@ const init = async (server: FastifyInstance) => {
               '3wid7xjx73y63ct3wh3k61ot6w',
               '11ei69wt47fz9kg4rypwx4drse',
               '1jtucy8b7pfu7btahd3k141bgc',
-              'bjpsfhgp7try8jsr845qpgbifa',
+              '51q6synw3jfduxeehd5bofbb7o',
+              'pxeg7pzkupgg3pohu58n473zqa',
             ],
           },
         },
