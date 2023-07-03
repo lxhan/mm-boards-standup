@@ -59,6 +59,7 @@ const init = async (server: FastifyInstance) => {
               '51q6synw3jfduxeehd5bofbb7o',
               'pxeg7pzkupgg3pohu58n473zqa',
               'yo5gpm4kotyqfp3t7eggzusfyr',
+              'boqnot1rr7gb5nuusfephm9jzh',
             ],
           },
         },
