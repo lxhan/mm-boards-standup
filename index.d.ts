@@ -10,6 +10,7 @@ declare module 'fastify' {
       TEMPLATE_BLOCK_ID: string;
       WEBHOOK: string;
       ZOOM: string;
+      BOARD_URL: string;
     };
   }
 }

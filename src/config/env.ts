@@ -24,6 +24,9 @@ const schema = {
     ZOOM: {
       type: 'string',
     },
+    BOARD_URL: {
+      type: 'string',
+    },
   },
 };
 

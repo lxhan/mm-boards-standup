@@ -10,16 +10,40 @@ const init = async (server: FastifyInstance) => {
   });
 
   server.get('/reminder', async (_, reply) => {
-    const { WEBHOOK, ZOOM } = server.config;
+    const { WEBHOOK, BOARD_URL, ZOOM } = server.config;
     await axios.post(
       WEBHOOK,
       {
-        text: `@channel \nDon't forget to fill out the daily report before the 1 PM KST meeting.\nSee you on Zoom!\n${ZOOM}`,
+        text: `@channel Don't forget to fill out the [Daily Report](${BOARD_URL}) before the [1 PM KST meeting](${ZOOM}).`,
       },
       { headers: { 'Content-Type': 'application/json' } }
     );
 
     reply.send({ ok: true });
+  });
+
+  server.get('/reminder-zoom', async (_, reply) => {
+    const { WEBHOOK, ZOOM } = server.config;
+    await axios.post(
+      WEBHOOK,
+      {
+        text: `@channel Please join the meeting.\n${ZOOM}`,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    reply.send({ ok: true });
+  });
+
+  server.get('/test', async (_, reply) => {
+    const { API_TOKEN, BASE_URL, TEMPLATE_BLOCK_ID, BOARD_ID } = server.config;
+    const headers = getHeaders(API_TOKEN);
+    const cartTemplate = await axios.post(
+      `${BASE_URL}/boards/${BOARD_ID}/blocks/${TEMPLATE_BLOCK_ID}/duplicate?asTemplate=false`,
+      null,
+      headers
+    );
+    console.log(cartTemplate.data);
   });
 
   server.get('/daily', async (_, reply) => {
@@ -64,7 +88,7 @@ const init = async (server: FastifyInstance) => {
           },
         },
       };
-      await axios.patch(
+      const p = await axios.patch(
         `${BASE_URL}/boards/${BOARD_ID}/blocks/${blockId}`,
         reqData,
         headers
